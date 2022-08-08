@@ -14,7 +14,7 @@ class Project {
 
 	private $config = [];
 
-	public function __construct(string $sourcePath) {
+	public function __construct(string $sourcePath, string $vendorDir = '') {
 		$this->sourcePath = trailingslashit($sourcePath);
 
 		$composerLock = $sourcePath.'composer.lock';
@@ -30,7 +30,7 @@ class Project {
 		foreach($lockConfig['packages'] as $package) {
 			$packageName = $package['name'];
 			$version = $package['version'];
-			$path = trailingslashit($sourcePath.'vendor/'.$packageName);
+			$path = trailingslashit($sourcePath.$vendorDir.'vendor/'.$packageName);
 
 			$package = new Package($packageName, $path, $version);
 			$this->packages[$packageName] = $package;
