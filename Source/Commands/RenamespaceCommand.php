@@ -226,10 +226,13 @@ class RenamespaceCommand extends Command {
 		$output->writeln("Saved project.  Running composer ...");
 		$output->writeln("");
 
-		`cd {$projectOutputPath} && composer update`;
+		`cd {$projectOutputPath} && composer update -o --no-dev --no-ansi --no-interaction`;
+
+        	$projectOutputPath = $projectOutputPath.$vendorDir;
+
 		`rm -rf {$projectOutputPath}vendor/bin`;
 		rename($projectOutputPath.'vendor', $outputPath.'lib');
-		`rm -rf $tempPath`;
+		//`rm -rf $tempPath`;
 
 		$output->writeln("");
 		$output->writeln("Finished.");
