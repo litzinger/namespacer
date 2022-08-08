@@ -34,7 +34,7 @@ class RenamespaceCommand extends Command {
 		$this->addOption("namespace", null, InputOption::VALUE_REQUIRED, "The prefix to add to namespaces", "MediaCloud\\Vendor\\");
 
 		$this->addOption("config", null, InputOption::VALUE_REQUIRED, "The path to the configuration to use, if required.", null);
-		
+
 		$this->addOption("vendorDir", null, InputOption::VALUE_REQUIRED, "If the vendor directory is located somewhere other than the root of the project", null);
 	}
 
@@ -99,8 +99,8 @@ class RenamespaceCommand extends Command {
 		}
 
 		if (file_exists($outputPath)) {
-			if (file_exists($outputPath.'lib')) {
-				`rm -rf {$outputPath}lib`;
+			if (file_exists($outputPath)) {
+				`rm -rf {$outputPath}`;
 			}
 		} else {
 			if(!mkdir($outputPath, 0755, true)) {
@@ -132,7 +132,7 @@ class RenamespaceCommand extends Command {
 
 		//region Project Info
 		$vendorDir = $input->getOption('vendorDir') ? trailingslashit($input->getOption('vendorDir')) : '';
-		
+
 		$project = new Project($sourcePath, $vendorDir);
 
 		$output->writeln("");
@@ -160,12 +160,12 @@ class RenamespaceCommand extends Command {
 			->render();
 
 		$output->writeln("");
-		
+
 		//endregion
-		
+
 		//region Package Processing
 		$configuration = new Configuration($configPath);
-		
+
 		$packageSection = $output->section();
 		$packageSection->writeln("Processing packages ...");
 
@@ -191,11 +191,11 @@ class RenamespaceCommand extends Command {
 
 		$output->writeln("");
 		$output->writeln("Found ".count($allNamespaces)." namespaces in {$sourceFileCount} source files.");
-		
+
 		//endregion
-		
+
 		//region Re-namespacing
-		
+
 		$packageSection = $output->section();
 		$packageSection->writeln("Re-namespacing packages ...");
 
@@ -217,7 +217,7 @@ class RenamespaceCommand extends Command {
 		$packageProgressSection->clear();
 
 		$output->writeln("");
-		
+
 		//endregion
 
 		//region Finished
@@ -231,7 +231,7 @@ class RenamespaceCommand extends Command {
         	$projectOutputPath = $projectOutputPath.$vendorDir;
 
 		`rm -rf {$projectOutputPath}vendor/bin`;
-		rename($projectOutputPath.'vendor', $outputPath.'lib');
+		rename($projectOutputPath.'vendor', $outputPath);
 		//`rm -rf $tempPath`;
 
 		$output->writeln("");
