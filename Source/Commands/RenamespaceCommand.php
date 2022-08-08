@@ -34,6 +34,8 @@ class RenamespaceCommand extends Command {
 		$this->addOption("namespace", null, InputOption::VALUE_REQUIRED, "The prefix to add to namespaces", "MediaCloud\\Vendor\\");
 
 		$this->addOption("config", null, InputOption::VALUE_REQUIRED, "The path to the configuration to use, if required.", null);
+		
+		$this->addOption("vendorDir", null, InputOption::VALUE_REQUIRED, "If the vendor directory is located somewhere other than the root of the project", null);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
@@ -129,8 +131,9 @@ class RenamespaceCommand extends Command {
 		//endregion
 
 		//region Project Info
+		$vendorDir = $input->getOption('vendorDir') ? trailingslashit($input->getOption('vendorDir')) : '';
 		
-		$project = new Project($sourcePath);
+		$project = new Project($sourcePath, $vendorDir);
 
 		$output->writeln("");
 
